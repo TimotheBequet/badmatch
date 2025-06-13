@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import './Auth.css'
 
@@ -17,6 +17,7 @@ function Register() {
   const [errors, setErrors] = useState({})
   const [isLoading, setIsLoading] = useState(false)
   const { register } = useAuth()
+  const navigate = useNavigate()
 
   const levels = [
     { value: 'Débutant', label: 'Débutant - Je découvre le badminton' },
@@ -90,17 +91,8 @@ function Register() {
 
     setIsLoading(true)
     try {
-      const userData = {
-        name: formData.name.trim(),
-        email: formData.email,
-        password: formData.password,
-        level: formData.level,
-        city: formData.city.trim(),
-        phone: formData.phone.trim()
-      }
-      
-      await register(userData)
-      // La redirection sera gérée par le hook useAuth
+      await register(formData)
+      navigate('/dashboard')
     } catch (error) {
       setErrors({
         general: error.message || 'Une erreur s\'est produite lors de l\'inscription'

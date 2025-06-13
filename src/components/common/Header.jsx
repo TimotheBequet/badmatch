@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Navigation from './Navigation'
 import ThemeToggle from '../ui/ThemeToggle'
 import { useAuth } from '../../hooks/useAuth.jsx'
@@ -6,6 +6,16 @@ import './Header.css'
 
 function Header() {
   const { user, logout } = useAuth()
+  const navigate = useNavigate()
+
+  const handleLogout = async () => {
+    try {
+      await logout()
+      navigate('/')
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion:', error)
+    }
+  }
 
   return (
     <header className="header">
@@ -19,8 +29,8 @@ function Header() {
           <div className="auth-section">
             {user ? (
               <div className="user-menu">
-                <span className="user-greeting">Bonjour, {user.name}</span>
-                <button onClick={logout} className="btn btn-outline btn-sm">
+                <span className="user-greeting">Bonjour,<br /> {user.name}</span>
+                <button onClick={handleLogout} className="btn btn-outline btn-sm">
                   Déconnexion
                 </button>
               </div>

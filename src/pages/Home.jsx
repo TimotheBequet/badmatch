@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth'
 import './Home.css'
 
 function Home() {
+  const { user } = useAuth()
+
   return (
     <div className="home-page">
       <section className="hero">
@@ -15,12 +18,30 @@ function Home() {
                 de nouveaux partenaires d&apos;entraînement pour perfectionner votre jeu.
               </p>
               <div className="hero-actions">
-                <Link to="/announcements" className="btn btn-lg">
-                  Voir les annonces
-                </Link>
-                <Link to="/create-announcement" className="btn btn-secondary btn-lg">
-                  Créer une annonce
-                </Link>
+                {user ? (
+                  <>
+                    <Link to="/announcements" className="btn btn-lg">
+                      Voir les annonces
+                    </Link>
+                    <Link to="/create-announcement" className="btn btn-secondary btn-lg">
+                      Créer une annonce
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <p className="hero-auth-message">
+                      Rejoignez notre communauté de passionnés de badminton pour trouver des partenaires de jeu et participer à des matchs réguliers.
+                    </p>
+                    <div className="hero-auth-buttons">
+                      <Link to="/login" className="btn btn-lg">
+                        Se connecter
+                      </Link>
+                      <Link to="/register" className="btn btn-secondary btn-lg">
+                        Créer un compte
+                      </Link>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
             <div className="hero-image">
@@ -70,19 +91,21 @@ function Home() {
         </div>
       </section>
 
-      <section className="cta">
-        <div className="container">
-          <div className="cta-content">
-            <h2 className="cta-title">Prêt à jouer ?</h2>
-            <p className="cta-description">
-              Inscrivez-vous gratuitement et trouvez votre prochain partenaire de badminton !
-            </p>
-            <Link to="/register" className="btn btn-lg">
-              Commencer maintenant
-            </Link>
+      {!user && (
+        <section className="cta">
+          <div className="container">
+            <div className="cta-content">
+              <h2 className="cta-title">Prêt à jouer ?</h2>
+              <p className="cta-description">
+                Inscrivez-vous gratuitement et trouvez votre prochain partenaire de badminton !
+              </p>
+              <Link to="/register" className="btn btn-lg">
+                Commencer maintenant
+              </Link>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </div>
   )
 }

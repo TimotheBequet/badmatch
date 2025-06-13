@@ -18,14 +18,16 @@ function Navigation() {
             Accueil
           </Link>
         </li>
-        <li className="nav-item">
-          <Link 
-            to="/announcements" 
-            className={isActive('/announcements') ? 'active' : ''}
-          >
-            Annonces
-          </Link>
-        </li>
+        {user && (
+          <li className="nav-item">
+            <Link 
+              to="/announcements" 
+              className={isActive('/announcements') ? 'active' : ''}
+            >
+              Annonces
+            </Link>
+          </li>
+        )}
         {user && (
           <>
             <li className="nav-item">

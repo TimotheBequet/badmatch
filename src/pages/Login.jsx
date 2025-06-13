@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import './Auth.css'
 
@@ -11,6 +11,7 @@ function Login() {
   const [errors, setErrors] = useState({})
   const [isLoading, setIsLoading] = useState(false)
   const { login } = useAuth()
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -54,7 +55,7 @@ function Login() {
     setIsLoading(true)
     try {
       await login(formData.email, formData.password)
-      // La redirection sera gérée par le hook useAuth
+      navigate('/dashboard')
     } catch (error) {
       setErrors({
         general: error.message || 'Une erreur s\'est produite lors de la connexion'
